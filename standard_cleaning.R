@@ -40,6 +40,8 @@ standard_cleaning <- function(X_train,X_test=data.frame())
 		cat("No redundant columns found\n")
 	}
 
+	cat("\n")
+
 	# converting two-element columns to binary
 	if (nrow(ldf[ldf$Unique_Values == 2,]) > 0)
 	{
@@ -54,6 +56,12 @@ standard_cleaning <- function(X_train,X_test=data.frame())
 
 			cat("Column", ldf$Column[ldf$Unique_Values == 2][i], "is converted to binary\n")
 		}
+	}else
+	{
+		cat("No binary columns found\n")
+	}
+
+	cat("\n")
 
 	# removing duplicate columns
 	X_train_new <- X_train[!duplicated(lapply(X_train,c))]
@@ -70,12 +78,17 @@ standard_cleaning <- function(X_train,X_test=data.frame())
 		cat("No duplicate columns found\n")
 	}
 
+	cat("\n")
+
 	# removing duplicate rows
 	if (length(which(duplicated(X_train))) > 0)
 	{
 		X_train <- X_train[!duplicated(X_train),]
 
 		cat(length(which(duplicated(X_train))), "duplicate rows removed from data\n")
+	}else
+	{
+		cat("No duplicate rows found\n")
 	}
 
 	return(list(X_train,X_test))
