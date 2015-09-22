@@ -62,13 +62,14 @@ convert_binary_columns <- function()
 ## function for removing duplicate columns
 remove_duplicate_columns <- function()
 {
-	X_train <<- X_train[!duplicated(lapply(X_train,c))]
+	dups <- sum(duplicated(lapply(X_train,c)))
 
-	if (sum(duplicated(lapply(X_train,c))) > 0)
+	if (dups > 0)
 	{
-		X_test <<- X_test[,colnames(X_test) %in% colnames(X_train_new)]
+		X_train <<- X_train[!duplicated(lapply(X_train,c))]
+		X_test <<- X_test[,colnames(X_test) %in% colnames(X_train)]
 
-		cat(sum(duplicated(lapply(X_train,c))), "duplicate columns removed from data\n")
+		cat(dups, "duplicate columns removed from data\n")
 	}else
 	{
 		cat("No duplicate columns found\n")
