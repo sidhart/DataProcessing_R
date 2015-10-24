@@ -21,6 +21,9 @@ remove_redundant_columns <- function()
 		X_test <<- X_test[,!names(X_test) %in% constant_columns]
 
 		cat(length(constant_columns), "redundant columns were removed from data\n")
+	}else
+	{
+    cat("No redundant columns found\n")
 	}
 	
 	cat("\n")
