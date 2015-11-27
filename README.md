@@ -1,12 +1,12 @@
 # DataProcessing
-The following scripts performs some standard and common data processing.
+Scripts to perform some standard and common data processing.
 
 ## Basic
-1. Removing redundant/constant columns
-2. Converting two-element columns to binary
-3. Removing duplicate columns
-4. Removing duplicate rows
+1. Summarize data
+2. Remove constant columns
+3. Remove duplicate columns
+4. Convert two-element columns to binary
 
 ## Categorical
-Will be updated soon.
-
+1. Onehot encoding variables
+2. Label encoding variables
