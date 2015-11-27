@@ -9,6 +9,7 @@ summarize_data <- function(df)
   # converting to dataframe
   df <- as.data.frame(df)
   
+  suppressWarnings(
   ldf <- lapply(1:ncol(df), function(k)
   {
     return(data.table(Column = colnames(df)[k],
@@ -20,6 +21,7 @@ summarize_data <- function(df)
                       Min = min(df[,k], na.rm=T)
                       ))
   })
+  )
   
   ldf <- rbindlist(ldf)
   
