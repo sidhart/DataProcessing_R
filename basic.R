@@ -30,14 +30,15 @@ summarize_data <- function(df)
 
 
 ## function for removing constant columns
-remove_redundant_columns <- function(df)
+remove_redundant_columns <- function(train,test)
 {
-	count_unique <- lapply(df, function(k){length(unique(k))})
+	count_unique <- lapply(train, function(k){length(unique(k))})
 	constant_columns <- names(count_unique[count_unique == 1])
 
 	if (length(constant_columns) > 0)
 	{
-		df <- df[, .SD, .SDcols=-c(constant_columns)]
+		train <- train[, .SD, .SDcols=-c(constant_columns)]
+    test <- test[, .SD, .SDcols=-c(constant_columns)]
     
     for (i in 1:length(constant_columns))
     {
@@ -50,20 +51,18 @@ remove_redundant_columns <- function(df)
 	
 	cat("\n")
   
-  return(df)
+  return(list("train"=train,"test"=test))
 }
 
 
 ## function for removing duplicate columns
-remove_duplicate_columns <- function(df)
+remove_duplicate_columns <- function(train,test)
 {
-  dups <- sum(duplicated(lapply(df,c)))
+  dups <- sum(duplicated(lapply(train,c)))
   
   if (dups > 0)
   {
-    df <- df[!duplicated(lapply(df,c))]
-    
-    cat(dups, "duplicate columns removed from data\n")
+    cat(dups, "duplicate columns found in data\n")
   }else
   {
     cat("No duplicate columns found\n")
@@ -71,28 +70,29 @@ remove_duplicate_columns <- function(df)
   
   cat("\n")
   
-  return(df)
+  return(list("train"=train,"test"=test))
 }
 
 
 ## function for converting two-element columns to binary
-convert_binary_columns <- function(df)
+convert_binary_columns <- function(train,test)
 {
-	count_unique <- lapply(df, function(k){length(unique(k))})
+	count_unique <- lapply(train, function(k){length(unique(k))})
 	binary_columns <- names(count_unique[count_unique == 2])
 
 	change <- 0
 
-	for (i in which(colnames(df) %in% binary_columns))
+	for (i in which(colnames(train) %in% binary_columns))
 	{
-		if (all(unique(df[[i]]) %in% c(0,1)) != T)
+		if (all(unique(train[[i]]) %in% c(0,1)) != T)
 		{
       # converting column to binary
-			df[[i]] <- as.numeric(as.factor(df[[i]])) - 1
+		  test[[i]] <- as.numeric(factor(test[[i]], levels=unique(train[[i]])))
+		  train[[i]] <- as.numeric(as.factor(train[[i]])) - 1
 
 			change <- 1
 
-			cat("Column", colnames(df)[i], "converted to binary column\n")
+			cat("Column", colnames(train)[i], "converted to binary column\n")
 		}
 	}
 
@@ -103,20 +103,22 @@ convert_binary_columns <- function(df)
 
 	cat("\n")
   
-  return(df)
+  return(list("train"=train,"test"=test))
 }
 
 
 ## function for cleaning data by combining cleaning functions
-clean_data <- function(df)
+clean_data <- function(train,test)
 {
   # loading libraries
   library(data.table)
   
-	df <- remove_redundant_columns(df)
-  df <- remove_duplicate_columns(df)
-  df <- convert_binary_columns(df)
+  df <- list("train"=train,"test"=test)
   
-  return(df)
+	df <- remove_redundant_columns(df$train,df$test)
+  df <- remove_duplicate_columns(df$train,df$test)
+  df <- convert_binary_columns(df$train,df$test)
+  
+  return(list("train"=df$train,"test"=df$test))
 }
 
