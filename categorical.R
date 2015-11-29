@@ -1,7 +1,7 @@
 ### functions for processing categorical data
 
 ## function for one-hot encoding categorical features
-encode_categories <- function(df1,df2,onehot=c("all"),label=c("none"))
+encode_categories <- function(df1,df2,onehot=c("none"),label=c("none"))
 {
 	# appending dataframes
   panel <- rbind(df1, df2)
