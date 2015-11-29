@@ -45,7 +45,7 @@ encode_categories <- function(df1,df2,onehot=c("all"),label=c("none"))
         cat("Onehot encoded column:", i, "\n")
       }
     }
-    if (!label[i] %in% c("all","none"))
+    if (!label[1] %in% c("all","none"))
     {
       for (i in which(colnames(panel) %in% label))
       {
