@@ -16,9 +16,9 @@ summarize_data <- function(df)
                       Type = class(df[,k]),
                       Unique_Values = length(unique(df[,k])),
                       Missing_Values = sum(is.na(df[,k])),
-                      Max = max(df[,k], na.rm=T),
-                      Mean = round(mean(df[,k], na.rm=T),4),
-                      Min = min(df[,k], na.rm=T)
+                      Max = round(as.numeric(max(df[,k], na.rm=T)),4),
+                      Mean = round(as.numeric(mean(df[,k], na.rm=T)),4),
+                      Min = round(as.numeric(min(df[,k], na.rm=T)),4)
                       ))
   })
   )
