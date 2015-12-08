@@ -30,7 +30,7 @@ summarize_data <- function(df)
 
 
 ## function for removing constant columns
-remove_redundant_columns <- function(train,test)
+remove_redundant_columns <- function(train, test)
 {
 	count_unique <- lapply(train, function(k){length(unique(k))})
 	constant_columns <- names(count_unique[count_unique == 1])
@@ -56,7 +56,7 @@ remove_redundant_columns <- function(train,test)
 
 
 ## function for removing duplicate columns
-remove_duplicate_columns <- function(train,test)
+remove_duplicate_columns <- function(train, test)
 {
   dups <- sum(duplicated(lapply(train,c)))
   
@@ -75,7 +75,7 @@ remove_duplicate_columns <- function(train,test)
 
 
 ## function for converting two-element columns to binary
-convert_binary_columns <- function(train,test)
+convert_binary_columns <- function(train, test)
 {
 	count_unique <- lapply(train, function(k){length(unique(k))})
 	binary_columns <- names(count_unique[count_unique == 2])
