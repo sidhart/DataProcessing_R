@@ -1,7 +1,7 @@
 ### functions for processing categorical data
 
 ## function for one-hot encoding categorical features
-encode_categories <- function(df1,df2,onehot=c("none"),label=c("none"))
+encode_categories <- function(df1, df2, onehot=c("none"), label=c("none"))
 {
 	# appending dataframes
   panel <- rbind(df1, df2)
@@ -12,6 +12,26 @@ encode_categories <- function(df1,df2,onehot=c("none"),label=c("none"))
   
   if (length(categorical_columns) > 0)
   {
+    if (!onehot[1] %in% c("all","none"))
+    {
+      # converting to dummy variables
+      panel <- dummy.data.frame(panel, names=onehot, sep="_")
+      
+      for (i in onehot)
+      {
+        cat("Onehot encoded column:", i, "\n")
+      }
+    }
+    if (!label[1] %in% c("all","none"))
+    {
+      for (i in which(colnames(panel) %in% label))
+      {
+        # converting to integer variable
+        panel[[i]] <- as.integer(as.factor(panel[[i]]))
+        
+        cat("Label encoded column:", colnames(panel)[i], "\n")
+      }
+    }
     if (onehot[1] == "all")
     {
       # loading library
@@ -30,27 +50,7 @@ encode_categories <- function(df1,df2,onehot=c("none"),label=c("none"))
       for (i in which(colnames(panel) %in% categorical_columns))
       {
         # converting to integer variable
-        panel[[i]] <- as.integer(as.character(as.factor(panel[[i]])))
-        
-        cat("Label encoded column:", colnames(panel)[i], "\n")
-      }
-    }
-    if (!onehot[1] %in% c("all","none"))
-    {
-      # converting to dummy variables
-      panel <- dummy.data.frame(panel, names=onehot, sep="_")
-      
-      for (i in onehot)
-      {
-        cat("Onehot encoded column:", i, "\n")
-      }
-    }
-    if (!label[1] %in% c("all","none"))
-    {
-      for (i in which(colnames(panel) %in% label))
-      {
-        # converting to integer variable
-        panel[[i]] <- as.integer(as.character(as.factor(panel[[i]])))
+        panel[[i]] <- as.integer(as.factor(panel[[i]]))
         
         cat("Label encoded column:", colnames(panel)[i], "\n")
       }
