@@ -14,6 +14,9 @@ encode_categories <- function(df1, df2, onehot=c("none"), label=c("none"))
   {
     if (!onehot[1] %in% c("all","none"))
     {
+      # loading library
+      library(dummies)
+      
       # converting to dummy variables
       panel <- dummy.data.frame(panel, names=onehot, sep="_")
       
